@@ -2,21 +2,15 @@
 
 def task12_1():
     print("\n=== ЗАДАНИЕ 12.1 ===")
-    # Кортеж из строк -> словарь {строка: длина_заглавных_букв}
-    text = input("Введите строки через запятую: ")
-    words = text.split(',')
+    # a) создает кортеж из строк, введенных пользователем
+    print("Введите строки через запятую:")
+    text = input()
+    words = [word.strip() for word in text.split(',')]
     my_tuple = tuple(words)
-    
-    result_dict = {}
-    for word in my_tuple:
-        word = word.strip()
-        count = 0
-        for letter in word:
-            if letter.isupper():
-                count += 1
-        result_dict[word] = count
-    
     print("Кортеж:", my_tuple)
+    
+    # b) преобразует в словарь {строка: длина_строки}
+    result_dict = {word: len(word) for word in my_tuple}
     print("Словарь:", result_dict)
     return my_tuple, result_dict
 
@@ -225,20 +219,23 @@ def task12_10():
 
 def task12_11():
     print("\n=== ЗАДАНИЕ 12.11 ===")
-    # Список в кортеж -> перемножение четных
-    text = input("Введите элементы через пробел: ")
+    # a) преобразует список в кортеж
+    print("Введите элементы через пробел:")
+    text = input()
     my_list = text.split()
     my_tuple = tuple(my_list)
     print("Кортеж:", my_tuple)
     
-    numbers = (2, 3, 4, 5, 6, 7, 8)
+    # b) перемножает четные числа из кортежа
     product = 1
     has_even = False
     
-    for num in numbers:
-        if num % 2 == 0:
-            product *= num
-            has_even = True
+    for item in my_tuple:
+        if item.isdigit():  # проверяем, что это число
+            num = int(item)
+            if num % 2 == 0:
+                product *= num
+                has_even = True
     
     if has_even:
         print("Произведение четных:", product)
@@ -302,18 +299,17 @@ def task12_13():
 
 def task12_14():
     print("\n=== ЗАДАНИЕ 12.14 ===")
-    # Поиск номера -> объединение чисел
-    my_tuple = (10, "text", 20, 30, "hello", 40)
+    # a) поиск порядкового номера элемента (только числа)
+    print("Введите элементы кортежа через пробел:")
+    data = input().split()
+    my_tuple = tuple(data)
     
-    element = input("Введите элемент для поиска: ")
-    try:
-        element = int(element)
-    except:
-        pass
+    print("Введите элемент для поиска:")
+    element = input()
     
     found_index = -1
     for i, item in enumerate(my_tuple):
-        if isinstance(item, (int, float)) and item == element:
+        if item.isdigit() and item == element:
             found_index = i
             break
     
@@ -322,29 +318,50 @@ def task12_14():
     else:
         print("Не найден")
     
-    numbers = (3, 6, 9, 12, 15, 2, 4)
-    big_num_str = ''.join(str(x) for x in numbers if x % 3 == 0)
+    # b) преобразование в одно число (только кратные 3)
+    numbers = []
+    for item in my_tuple:
+        if item.isdigit():
+            num = int(item)
+            if num % 3 == 0:
+                numbers.append(num)
     
-    if big_num_str:
+    if numbers:
+        big_num_str = ''.join(str(x) for x in numbers)
         result = int(big_num_str)
         print("Объединенное число:", result)
     else:
         print("Нет чисел кратных 3")
-    return found_index, big_num_str
+        result = 0
+    return found_index, result
 
 def task12_15():
     print("\n=== ЗАДАНИЕ 12.15 ===")
-    # Длина строк -> поиск в кортеже кортежей
-    my_tuple = ("apple", 123, "banana", 45.6, "cherry")
-    string_count = sum(1 for x in my_tuple if isinstance(x, str))
-    print(f"Строковых элементов: {string_count}")
+    # a) длина кортежа (количество строковых элементов)
+    print("Введите элементы кортежа через пробел:")
+    data = input().split()
+    my_tuple = tuple(data)
     
-    tuple_of_tuples = ((1, 2, 3), (4, 5, 6), (7, 8, 9), (1, 4, 7))
-    element = input("Введите элемент для поиска: ")
-    try:
-        element = int(element)
-    except:
-        pass
+    string_elements = [x for x in my_tuple if not x.isdigit()]
+    string_count = len(string_elements)
+    print(f"Количество строковых элементов: {string_count}")
+    
+    # b) поиск в кортеже кортежей
+    print("Введите элементы для вложенных кортежей через пробел:")
+    nested_data = input().split()
+    print("Введите количество элементов в каждом кортеже:")
+    chunk_size = int(input())
+    
+    tuple_of_tuples = []
+    for i in range(0, len(nested_data), chunk_size):
+        chunk = tuple(nested_data[i:i + chunk_size])
+        tuple_of_tuples.append(chunk)
+    
+    tuple_of_tuples = tuple(tuple_of_tuples)
+    print("Кортеж кортежей:", tuple_of_tuples)
+    
+    print("Введите элемент для поиска:")
+    element = input()
     
     count = 0
     for tup in tuple_of_tuples:
@@ -364,12 +381,35 @@ def main():
         result = task12_2()
     elif choice == '12.3':
         result = task12_3()
-    # ... и так далее для остальных заданий
+    elif choice == '12.4':
+        result = task12_4()
+    elif choice == '12.5':
+        result = task12_5()
+    elif choice == '12.6':
+        result = task12_6()
+    elif choice == '12.7':
+        result = task12_7()
+    elif choice == '12.8':
+        result = task12_8()
+    elif choice == '12.9':
+        result = task12_9()
+    elif choice == '12.10':
+        result = task12_10()
+    elif choice == '12.11':
+        result = task12_11()
+    elif choice == '12.12':
+        result = task12_12()
+    elif choice == '12.13':
+        result = task12_13()
+    elif choice == '12.14':
+        result = task12_14()
+    elif choice == '12.15':
+        result = task12_15()
     else:
         print("Неверный выбор!")
         return
     
-    print("Результат:", result)
+    print("\nРезультат:", result)
 
 if __name__ == "__main__":
     main()
